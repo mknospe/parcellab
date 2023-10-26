@@ -1,26 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Tracking from 'routes/tracking/Tracking';
+import Order from 'routes/order/Order';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <Tracking />,
+    },
+    {
+        path: '/order',
+        element: <Order />,
+    },
+]);
+
+export default function App() {
+    return <RouterProvider router={router} />;
 }
-
-export default App;
