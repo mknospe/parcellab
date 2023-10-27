@@ -7,7 +7,7 @@ export default function ArticleList({ items }: { items: Orders.Article[] }) {
         <>
             <Headline>Articles</Headline>
 
-            <ul role="list" className="divide-y divide-gray-100">
+            <ul className="divide-y divide-gray-100">
                 {items.map((item) => {
                     return <Article key={item.articleNo} item={item} />;
                 })}

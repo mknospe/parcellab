@@ -30,7 +30,6 @@ export default function Tracking() {
             setOrder(response.data);
             navigate('/order-status');
         } catch (e) {
-            // TODO show some error message to the user
             flushOrder();
             navigate('/order-not-found');
         }

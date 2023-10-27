@@ -6,7 +6,7 @@ export default function Checkpoints({ items }: { items: Orders.Checkpoint[] }) {
     return (
         <div>
             <Headline>Shipping Updates</Headline>
-            <ul role="list" className="divide-y divide-gray-100">
+            <ul className="divide-y divide-gray-100">
                 {items.map((item, index) => {
                     return (
                         <Checkpoint

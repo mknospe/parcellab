@@ -20,20 +20,21 @@ export default function PickupLocation({
                 <a
                     className="underline"
                     href={address.pickup_address_link}
-                    rel="nofollow"
                     target="_blank"
+                    rel="noreferrer"
                 >
                     {address.pickup_address}
                 </a>
             </p>
             <a
                 href={address.pickup_address_link}
-                rel="nofollow"
                 target="_blank"
+                rel="noreferrer"
             >
                 <img
                     src={address.pickup_address_map_url}
                     className="w-full rounded border border-gray-200"
+                    alt="Pickup Location Map"
                 />
             </a>
         </div>
