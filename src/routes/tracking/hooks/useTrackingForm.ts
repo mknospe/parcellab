@@ -23,7 +23,7 @@ function useTrackingForm() {
     return useForm<TrackingFormValues>({
         resolver: zodResolver(schema),
         defaultValues: {
-            orderNumber: '',
+            orderNumber: '', // TODO remove defaults
             zipCode: '',
         },
     });

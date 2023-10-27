@@ -6,8 +6,7 @@ import useTrackingForm, {
 } from 'routes/tracking/hooks/useTrackingForm';
 import Input from 'components/Input';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { Order } from 'types/orders';
+import type * as Orders from 'types/orders';
 import { useOrderTrackingActions } from 'stores/orderTrackingStore';
 import MainFrame from 'components/MainFrame';
 import Card from 'components/Card';
@@ -23,11 +22,12 @@ export default function Tracking() {
         zipCode,
     }) => {
         try {
-            const response = await axios.get<Order>(
+            const response = await fetch(
                 `https://api.prcl.dev/orders/${orderNumber}?zipCode=${zipCode}`
             );
+            const order = (await response.json()) as Orders.Order;
 
-            setOrder(response.data);
+            setOrder(order);
             navigate('/order-status');
         } catch (e) {
             flushOrder();

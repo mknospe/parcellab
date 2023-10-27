@@ -1,4 +1,4 @@
-import * as Orders from 'types/orders';
+import type * as Orders from 'types/orders';
 import Headline from 'components/Headline';
 
 export default function PickupLocation({

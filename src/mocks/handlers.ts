@@ -1,29 +1,24 @@
-import { http, HttpResponse } from 'msw';
+import { rest } from 'msw';
 import ordersMock from 'mocks/data/orders.json';
 import { Order } from 'types/orders';
 
 export const handlers = [
-    http.get(
-        'https://api.prcl.dev/orders/:orderNumber',
-        ({ request, params }) => {
-            const url = new URL(request.url);
-            const zipCode = url.searchParams.get('zipCode');
-            const orderNumber = params.orderNumber as string | null;
+    rest.get('https://api.prcl.dev/orders/:orderNumber', (req, res, ctx) => {
+        const url = new URL(req.url);
+        const zipCode = url.searchParams.get('zipCode');
+        const orderNumber = req.params.orderNumber as string | null;
 
-            const matchingOrder = (ordersMock as Order[]).find((order) => {
-                return (
-                    order.tracking_number === orderNumber &&
-                    order.zip_code === zipCode
-                );
-            });
+        const matchingOrder = (ordersMock as Order[]).find((order) => {
+            return (
+                order.tracking_number === orderNumber &&
+                order.zip_code === zipCode
+            );
+        });
 
-            if (matchingOrder) {
-                return HttpResponse.json(matchingOrder);
-            }
-
-            return new HttpResponse(null, {
-                status: 404,
-            });
+        if (matchingOrder) {
+            return res(ctx.json(matchingOrder));
         }
-    ),
+
+        return res(ctx.status(404, 'Order not found'));
+    }),
 ];

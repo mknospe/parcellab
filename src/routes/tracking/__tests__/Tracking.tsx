@@ -2,12 +2,6 @@ import Tracking from '../Tracking';
 import { screen, render, waitFor } from '@testing-library/react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
-import axios from 'axios';
-jest.mock('axios', () => {
-    return {
-        get: jest.fn(),
-    };
-});
 
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -28,7 +22,7 @@ const TestWrapper = () => {
 describe('Tracking', () => {
     test('should show input errors and should not submit when input is invalid', async () => {
         // @ts-ignore
-        axios.get.mockResolvedValue('ok');
+
         render(<Tracking />, { wrapper: TestWrapper });
 
         await screen.findByText('Track your order');
@@ -64,7 +58,6 @@ describe('Tracking', () => {
 
     test('should submit and redirect, when a corresponding order was found', async () => {
         // @ts-ignore
-        axios.get.mockResolvedValue('ok');
         render(<Tracking />, { wrapper: TestWrapper });
 
         await screen.findByText('Track your order');
@@ -90,7 +83,6 @@ describe('Tracking', () => {
 
     test('should submit and redirect to the error route, when a no order was found', async () => {
         // @ts-ignore
-        axios.get.mockRejectedValueOnce('Error');
         render(<Tracking />, { wrapper: TestWrapper });
 
         await screen.findByText('Track your order');

@@ -1,4 +1,4 @@
-import * as Orders from 'types/orders';
+import type * as Orders from 'types/orders';
 import Article from './Article';
 import Headline from 'components/Headline';
 

@@ -1,4 +1,4 @@
-import * as Orders from 'types/orders';
+import type * as Orders from 'types/orders';
 import Checkpoint from './Checkpoint';
 import Headline from 'components/Headline';
 
