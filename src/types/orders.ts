@@ -1,26 +1,30 @@
-export type CheckpointStatus =
-    | 'Registered'
-    | 'New delivery date set'
-    | 'Ready for collection'
-    | 'Failed delivery attempt'
-    | 'In transit';
-
 export type Courier = 'dhl' | 'ups';
 
-export type CheckpointMeta = {
+export type DeliveryDate = {
+    delivery_date: string;
+    delivery_time_frame_from: string;
+    delivery_time_frame_to: string;
+};
+
+export type PickupAddress = {
     pickup_address: string;
     pickup_address_link: string;
     pickup_address_map_url: string;
 };
 
+export type CheckpointStatus =
+    | { status: 'Registered' }
+    | { status: 'In transit' }
+    | { status: 'New delivery date set'; meta: DeliveryDate }
+    | { status: 'Failed delivery attempt' }
+    | { status: 'Ready for collection'; meta: PickupAddress };
+
 export type Checkpoint = {
     status_details: string;
     event_timestamp: string;
-    status: CheckpointStatus;
     country_iso3: string;
     city: string;
-    meta?: CheckpointMeta;
-};
+} & CheckpointStatus;
 
 export type Article = {
     articleNo: string;

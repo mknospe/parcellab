@@ -1,11 +1,45 @@
 import parcelLabLogo from 'images/parcellab_logo.jpeg';
 import Headline from 'components/Headline';
+import { SubmitHandler } from 'react-hook-form';
+import useTrackingForm, {
+    TrackingFormValues,
+} from 'routes/tracking/hooks/useTrackingForm';
 import Input from 'components/Input';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Order } from 'types/orders';
+import { useOrderTrackingActions } from 'stores/orderTrackingStore';
+import MainFrame from 'components/MainFrame';
+import Card from 'components/Card';
+import Button from 'components/Button';
+
 export default function Tracking() {
+    const navigate = useNavigate();
+    const { setOrder, flushOrder } = useOrderTrackingActions();
+    const { formState, handleSubmit, register } = useTrackingForm();
+
+    const onSubmit: SubmitHandler<TrackingFormValues> = async ({
+        orderNumber,
+        zipCode,
+    }) => {
+        try {
+            const response = await axios.get<Order>(
+                `https://api.prcl.dev/orders/${orderNumber}?zipCode=${zipCode}`
+            );
+
+            setOrder(response.data);
+            navigate('/order-status');
+        } catch (e) {
+            // TODO show some error message to the user
+            flushOrder();
+            navigate('/order-not-found');
+        }
+    };
+
     return (
-        <div className="bg-gradient-to-b from-blue-100 from-10% to-white">
+        <MainFrame>
             <div className="flex h-screen flex-1 flex-col justify-center items-center sm:px-6 lg:px-8">
-                <div className="sm:mx-auto sm:w-full sm:max-w-md">
+                <div className="sm:mx-auto sm:w-full sm:max-w-md mb-8">
                     <img
                         className="mx-auto h-24 w-auto rounded"
                         src={parcelLabLogo}
@@ -13,36 +47,36 @@ export default function Tracking() {
                     />
                 </div>
 
-                <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-[480px]">
-                    <div className="bg-white px-6 py-12 shadow sm:rounded sm:px-12">
-                        <Headline text="Track your order" />
-                        <p className="text-gray-500 mb-6">
-                            Enter your order number and zip code combination to
-                            see the order details and shipping updates.
-                        </p>
+                <Card className="sm:max-w-[480px]">
+                    <Headline>Track your order</Headline>
+                    <p className="text-gray-500 mb-6">
+                        Enter your order number and zip code combination to see
+                        the order details and shipping updates.
+                    </p>
 
-                        <form className="space-y-6" action="#" method="POST">
-                            <Input
-                                name="orderId"
-                                type="text"
-                                label="Order Number"
-                            />
-                            <Input
-                                name="zipCode"
-                                type="text"
-                                label="Zip Code"
-                            />
+                    <form
+                        className="space-y-6"
+                        onSubmit={handleSubmit(onSubmit)}
+                    >
+                        <Input
+                            {...register('orderNumber')}
+                            error={formState.errors.orderNumber?.message}
+                            type="text"
+                            label="Order Number"
+                            autoComplete="off"
+                        />
+                        <Input
+                            {...register('zipCode')}
+                            error={formState.errors.zipCode?.message}
+                            type="text"
+                            label="Zip Code"
+                            autoComplete="off"
+                        />
 
-                            <button
-                                type="submit"
-                                className="flex w-full justify-center rounded bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            >
-                                Track
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                        <Button type="submit">Track</Button>
+                    </form>
+                </Card>
             </div>
-        </div>
+        </MainFrame>
     );
 }

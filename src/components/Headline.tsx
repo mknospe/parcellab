@@ -1,9 +1,7 @@
-interface HeadlineProps {
-    text: string
-}
+import { ReactNode } from 'react';
 
-const Headline = ({ text }: HeadlineProps) => (
-    <div className="text-xl font-medium mb-2">{text}</div>
-)
+const Headline = ({ children }: { children: ReactNode }) => (
+    <div className="text-xl font-medium mb-2">{children}</div>
+);
 
-export default Headline
+export default Headline;
